@@ -1,2 +1,6 @@
 **/*.tfstate*
 **/.terraform/*
+terraform/key/*
+**/host_vars/*.yml
+**/inventory
+
