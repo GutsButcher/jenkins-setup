@@ -84,14 +84,14 @@ resource "aws_instance" "jenkins" {
   tags = {
     Name = "jenkins-server"
   }
-    lifecycle {
+  lifecycle {
     ignore_changes = [security_groups]
   }
   user_data = <<-EOF
     #!/bin/bash
     sudo apt-get update
     EOF
-  
+
 }
 
 
@@ -101,7 +101,7 @@ resource "aws_instance" "jenkins" {
 # pass the public IP of the instance to ansible using local-exec with EOF to a file named inventory
 resource "null_resource" "jenkins" {
   provisioner "local-exec" {
-    
+
     command = <<-EOF
       mkdir -p ../ansible 
       mkdir ../ansible/host_vars || rm -fr ../ansible/host_vars/*
@@ -123,8 +123,13 @@ resource "null_resource" "jenkins" {
 
 
 
-
-
+locals {
+  key_abs_path = abspath("./key/${var.key_name}")
+}
+# output the key absolute path
+output "key_abs_path" {
+  value = local.key_abs_path
+}
 output "public_ip" {
   value = aws_instance.jenkins.public_ip
 }
