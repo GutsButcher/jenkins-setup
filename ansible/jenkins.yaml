@@ -15,3 +15,7 @@
       url_password: "{{ jenkins_password.stdout }}"
       url: http://localhost:8080
     with_items: "{{ jenkins_plugins }}"
+
+  - name: Print win_credential
+    debug:
+      msg: "Username: admin , Password: {{ jenkins_password.stdout }}"

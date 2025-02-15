@@ -1,0 +1,13 @@
+---
+
+# a task to test special variables access
+- hosts: all
+  gather_facts: no
+  vars:
+    test: http://localhost:8080
+  vars_files:
+    - vars/suggested_plugins.yaml
+  tasks:
+    - name: "Test special variables access"
+      debug:
+        msg: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
