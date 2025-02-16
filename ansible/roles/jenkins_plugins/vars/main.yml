@@ -1,0 +1,5 @@
+jenkins_plugins:
+  -  git
+  -  github
+  -  maven-plugin
+  -  publish-over-ssh
