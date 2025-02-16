@@ -61,9 +61,9 @@
     until: result.status == 200
     retries: 60
     delay: 5
-    when: jenkins_service.changed
+    when: jenkins_service.state == 'started'
 
   - name: Configure Jenkins plugins
     include_role:
       name: jenkins_plugins
-    when: jenkins_service.changed and result.status == 200
+    when: jenkins_service.state == 'started' and result.status == 200
