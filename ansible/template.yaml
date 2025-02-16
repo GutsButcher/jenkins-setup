@@ -1,8 +1,0 @@
----
-- name: Write hostname
-  hosts: all
-  tasks:
-  - name: write hostname using jinja2
-    ansible.builtin.template:
-       src: templates/test.j2
-       dest: /tmp/hostname

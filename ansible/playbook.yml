@@ -50,3 +50,20 @@
       name: jenkins
       state: started
       enabled: yes
+    register: jenkins_service
+
+
+  - name: Wait for Jenkins to start
+    uri:
+      url: http://localhost:8080
+      status_code: 200
+    register: result
+    until: result.status == 200
+    retries: 60
+    delay: 5
+    when: jenkins_service.changed
+
+  - name: Configure Jenkins plugins
+    include_role:
+      name: jenkins_plugins
+    when: jenkins_service.changed and result.status == 200
