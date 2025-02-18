@@ -61,12 +61,37 @@ resource "aws_security_group" "jenkins" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "jenkins" {
-  description       = "Allow all ports from the same security group"
+
+# SSH Access
+resource "aws_vpc_security_group_ingress_rule" "jenkins_ssh" {
+  description       = "Allow SSH access"
   security_group_id = aws_security_group.jenkins.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = -1
+  cidr_ipv4        = "0.0.0.0/0"
+  ip_protocol      = "tcp"
+  from_port        = 22
+  to_port          = 22
 }
+
+# Jenkins Web Interface
+resource "aws_vpc_security_group_ingress_rule" "jenkins_web" {
+  description       = "Allow Jenkins web interface access"
+  security_group_id = aws_security_group.jenkins.id
+  cidr_ipv4        = "0.0.0.0/0"
+  ip_protocol      = "tcp"
+  from_port        = 8080
+  to_port          = 8080
+}
+
+# ICMP (Ping)
+resource "aws_vpc_security_group_ingress_rule" "jenkins_icmp" {
+  description       = "Allow ICMP"
+  security_group_id = aws_security_group.jenkins.id
+  cidr_ipv4        = "0.0.0.0/0"
+  ip_protocol      = "icmp"
+  from_port        = -1
+  to_port          = -1
+}
+
 resource "aws_vpc_security_group_egress_rule" "jenkins" {
   description       = "Allow all ports from the same security group"
   security_group_id = aws_security_group.jenkins.id
